@@ -55,7 +55,11 @@ module.exports = configure(function (ctx) {
 
       // transpile: false,
       // publicPath: '/',
-
+      env: {
+        VUE_APP_BASE_API: ctx.dev
+          ? 'http://localhost:8001'
+          : 'http://prod.api.xxx.com'
+      },
       // Add dependencies for transpiling with Babel (Array of string/regex)
       // (from node_modules, which are by default not transpiled).
       // Applies only if "transpile" is set to true.
@@ -86,7 +90,24 @@ module.exports = configure(function (ctx) {
         type: 'http'
       },
       port: 8080,
-      open: true // opens browser window automatically
+      open: true, // opens browser window automatically
+      proxy: {
+        // proxy all requests starting with /api to jsonplaceholder
+        '/api': {
+          target: process.env.VUE_APP_BASE_API,
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api': ''
+          }
+        },
+        '/auth': {
+          target: process.env.VUE_APP_BASE_API,
+          changeOrigin: true,
+          pathRewrite: {
+            '^/auth': 'auth'
+          }
+        }
+      }
     },
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework

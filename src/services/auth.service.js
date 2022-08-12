@@ -1,15 +1,15 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:8001/api/auth/';
+import axios from './request';
 
 class AuthService {
     login(user) {
-        return axios
-            .post(API_URL + 'signin', {
-                username: user.username,
-                password: user.password
-            })
-            .then(response => {
+        return axios({
+          url: 'api/auth/signin',
+          method: 'post',
+          data: {
+            username: user.username,
+            password: user.password
+          }
+        }).then(response => {
               // eslint-disable-next-line no-console
                 if (response.data.token) {
                     localStorage.setItem('user', JSON.stringify(response.data.user));

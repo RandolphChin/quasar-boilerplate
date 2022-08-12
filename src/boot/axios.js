@@ -1,4 +1,4 @@
-import { boot } from 'quasar/wrappers'
+import {boot} from 'quasar/wrappers'
 import axios from 'axios'
 
 // Be careful when using SSR for cross-request state pollution
@@ -7,9 +7,23 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' })
+console.log('*********************')
+console.log('*********************')
+console.log('process.env.VUE_APP_BASE_API=', process.env.VUE_APP_BASE_API)
+console.log('*********************')
+const api = axios.create({baseURL: process.env.VUE_APP_BASE_API})
 
-export default boot(({ app }) => {
+// request拦截器
+api.interceptors.request.use(config => {
+  // eslint-disable-next-line dot-notation
+  // config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+  config.headers['Content-Type'] = 'application/json'
+  return config
+}, error => {
+  Promise.reject(error)
+})
+
+export default boot(({app}) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios
@@ -21,4 +35,4 @@ export default boot(({ app }) => {
   //       so you can easily perform requests against your app's API
 })
 
-export { api }
+export {api}
