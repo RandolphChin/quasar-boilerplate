@@ -1,5 +1,5 @@
 # Quasar App 脚手架(quasar-boilerplate)
-参考[bezkoder](https://github.com/bezkoder/vue-vuex-jwt-auth.git)vue-vuex-jwt-auth
+参考 [bezkoder](https://github.com/bezkoder/vue-vuex-jwt-auth.git) vue-vuex-jwt-auth 和 [pratik227](https://github.com/pratik227/quasar-admin.git) quasar-admin
 A Quasar Project
 
 ## Install the dependencies
