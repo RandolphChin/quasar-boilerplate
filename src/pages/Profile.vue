@@ -20,6 +20,11 @@
               {{currentToken}}
             </div>
           </q-card-section>
+          <q-card-section>
+            <div class="text-body2 text-justify">
+              {{info}}
+            </div>
+          </q-card-section>
         </q-card>
       </div>
     </div>
@@ -27,10 +32,10 @@
 </template>
 
 <script>
-import {computed, defineComponent} from 'vue'
+import {computed, defineComponent, ref, onMounted } from 'vue'
 import {useStore} from "vuex";
 import {useRouter} from "vue-router/dist/vue-router";
-
+import UserService from '../services/user.service';
 export default defineComponent({
   name: "Profile",
   setup() {
@@ -49,9 +54,28 @@ export default defineComponent({
     if (!loggedIn.value) {
       router.push('/login');
     }
+    let info = ref('')
+    onMounted(() => {
+      console.log('******** onMounted **********');
+       UserService.getAdminBoard().then(
+        response => {
+          console.log('.....');
+          console.log(response.data);
+          info = response.data;
+          console.log('==========');
+          console.log(info);
+        },
+        error => {
+          console.log(error);
+          console.log(error.response);
+        }
+      );
+    })
+
     return {
       currentUser,
-      currentToken
+      currentToken,
+      info
     }
   }
 })
