@@ -52,7 +52,7 @@ export default defineComponent({
       return store.state.auth.status.loggedIn
     })
     if (!loggedIn.value) {
-      router.push('/login');
+      // router.push('/login');
     }
     let info = ref('')
     onMounted(() => {

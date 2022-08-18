@@ -1,5 +1,6 @@
 import {boot} from 'quasar/wrappers'
 import axios from 'axios'
+
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -12,9 +13,7 @@ console.log('process.env.VUE_APP_BASE_API=', process.env.VUE_APP_BASE_API)
 console.log('*********************')
 const api = axios.create({baseURL: process.env.VUE_APP_BASE_API})
 
-
-
-export default boot(({app}) => {
+export default boot(({app, store }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios
@@ -41,18 +40,15 @@ export default boot(({app}) => {
   }, function(error) {
     if (error.response.status === 401) {
       console.log('enter .... 401');
-      // store.dispatch('logout')
-      // router.push("/login")
+      store.dispatch('auth/logout')
       return Promise.reject(error)
     }
     if (error.response.status === 403) {
       console.log('enter .... 403');
-      // store.dispatch('logout')
-      // router.push('/login')
+      store.dispatch('auth/logout')
     }
     return Promise.reject(error)
   })
-
 })
 
 export {api}
